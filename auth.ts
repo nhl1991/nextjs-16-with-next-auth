@@ -1,6 +1,7 @@
 // app/api/auth/[...nextauth]/route.ts
 import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import SpotifyProvider from "next-auth/providers/spotify";
 
 export const authOptions = {
   providers: [
@@ -8,30 +9,35 @@ export const authOptions = {
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
     }),
+    SpotifyProvider({
+      clientId: process.env.SPOTIFY_CLIENT_ID!,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: [
+            "user-read-playback-state",
+            "user-read-currently-playing",
+          ].join(" "),
+        },
+      },
+    }),
   ],
   callbacks: {
-    async redirect() {
-      return "/get-server-session";
-    },
-
-    async jwt({ token }) {
+    async jwt({ token, account }) {
+      if (account) {
+        token.account = account;
+      }
       return token;
     },
-    async session({ session }) {
-      // When using JSON Web Tokens the jwt() callback is invoked before the session() callback, 
-      // so anything you add to the JSON Web Token will be immediately available in the session callback, 
-      // like for example an access_token or id from a provider.
-
-
+    async session({ session, token }) {
+      // When using JSON Web Tokens the jwt() callback is invoked before the session() callback.
+      // strategyがjwtの場合、jwt()がsession()より先実行する。
+      if (token.account) {
+        session.account = token.account
+      }
       return session;
     },
   },
 } satisfies AuthOptions;
 
 export const handler = NextAuth(authOptions);
-
-//
-// Argument of type '{ providers: OAuthConfig<GithubProfile>[]; callbacks: { jwt({ token, user, account, profile, isNewUser }: { token: any; user: any; account: any; profile: any; isNewUser: any; }): any; }; }' is not assignable to parameter of type 'AuthOptions'.
-//   The types of 'callbacks.jwt' are incompatible between these types.
-//     Type '({ token, user, account, profile, isNewUser }: { token: any; user: any; account: any; profile: any; isNewUser: any; }) => any' is not assignable to type '(params: { token: JWT; user: User | AdapterUser; account: Account | null; profile?: Profile | undefined; trigger?: "signIn" | "signUp" | "update" | undefined; isNewUser?: boolean | undefined; session?: any; }) => Awaitable<...>'.
-//       Types of parameters '__0' and 'params' are incompatible.

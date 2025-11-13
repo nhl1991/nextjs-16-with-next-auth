@@ -27,6 +27,11 @@ export default function Navigation() {
   return (
     <UL>
       <Default />
+      {
+        session.account.provider === 'spotify' ? <li className="nav_default">
+          <Link href="/spotify">SPOTIFY</Link>
+        </li> : null
+      }
       <li>
         <p>{username}</p>
       </li>

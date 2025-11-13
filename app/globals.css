@@ -29,7 +29,10 @@ button {
   @apply px-4 py-2 text-xl text-white bg-sky-400 rounded-xl hover:bg-sky-700 cursor-pointer;
 }
 
-
 #navigation > .nav_default {
   @apply rounded-xl hover:bg-sky-700 px-4 py-2
+}
+
+#navigation > .nav_default:hover {
+  @apply text-white
 }
