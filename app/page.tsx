@@ -6,9 +6,10 @@ import { useEffect } from "react";
 
 export default function Home() {
   const { data: session } = useSession();
-  console.log(session?.user?.image);
 
-  useEffect(() => {}, [session]);
+  useEffect(() => {
+
+  }, [session]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -28,7 +29,7 @@ export default function Home() {
             <p>
               Signed in as{" "}
               <b className="px-2 py-1 bg-sky-400 text-white rounded-xl">
-                {session.user?.email}
+                {session.user?.email ?? session.user?.name}
               </b>
             </p>
           </div>
