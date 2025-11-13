@@ -12,6 +12,7 @@ export const authOptions = {
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID!,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
+
       authorization: {
         params: {
           scope: [
@@ -29,11 +30,13 @@ export const authOptions = {
       }
       return token;
     },
+    
     async session({ session, token }) {
       // When using JSON Web Tokens the jwt() callback is invoked before the session() callback.
       // strategyがjwtの場合、jwt()がsession()より先実行する。
       if (token.account) {
-        session.account = token.account
+        const { refresh_token, ...rest } = token.account;
+        session.account = rest;
       }
       return session;
     },
