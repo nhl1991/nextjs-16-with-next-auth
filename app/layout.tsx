@@ -18,6 +18,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Laslark1991's Next-Auth",
+  openGraph: {
+    type: "website",
+    url: "https://example.com",
+    title: "My Website",
+    description: "My Website Description",
+    siteName: "My Website",
+    images: [{ url: "https://example.com/og.png" }],
+  },
   description: "To study next-auth with next.js 16.",
 };
 
@@ -26,7 +34,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const session = await getServerSession(authOptions);
 
   return (
@@ -38,8 +45,9 @@ export default async function RootLayout({
           <header className="w-screen p-4 flex items-center justify-end">
             <Navigation />
           </header>
-          {children}
-          
+          <main className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+            {children}
+          </main>
         </ClientProvider>
       </body>
     </html>

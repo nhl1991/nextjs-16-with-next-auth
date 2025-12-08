@@ -16,10 +16,8 @@ export default function Navigation() {
     return (
       <UL>
         <Default />
-        <li>
-          <button className={classname} onClick={() => signIn()}>
-            Sign In
-          </button>
+        <li className="nav_default">
+          <Link href="/signIn">Sign In</Link>
         </li>
       </UL>
     );
@@ -27,11 +25,11 @@ export default function Navigation() {
   return (
     <UL>
       <Default />
-      {
-        session.account.provider === 'spotify' ? <li className="nav_default">
+      {session.account.provider === "spotify" ? (
+        <li className="nav_default">
           <Link href="/spotify">SPOTIFY</Link>
-        </li> : null
-      }
+        </li>
+      ) : null}
       <li>
         <p>{username}</p>
       </li>
@@ -46,9 +44,14 @@ export default function Navigation() {
 
 function UL({ children }: { children: React.ReactNode }) {
   return (
-    <ul id="navigation" className="flex text-xl items-center justify-center gap-x-4">
-      {children}
-    </ul>
+    <nav>
+      <ul
+        id="navigation"
+        className="flex text-xl items-center justify-center gap-x-4"
+      >
+        {children}
+      </ul>
+    </nav>
   );
 }
 

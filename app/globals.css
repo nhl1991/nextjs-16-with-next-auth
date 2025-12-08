@@ -36,3 +36,8 @@ button {
 #navigation > .nav_default:hover {
   @apply text-white
 }
+
+
+nav {
+  @apply p-2
+}
